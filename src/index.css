@@ -1,0 +1,116 @@
+
+
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+footer {
+    position: relative;
+    /*bottom: 0;*/
+    width: 100%;
+}
+
+.main-container {
+    min-height: calc(100vh - 200px);
+}
+
+.bg-dark {
+    background-color: #111111 !important;
+}
+
+.dash-container {
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+}
+
+.displayName {
+    padding-left: 10px;
+    font-size: 20px;
+    font-style: italic;
+}
+
+.displayImage {
+    width: 100%;
+}
+
+.name {
+    padding-left: 10px;
+    border-bottom: 1px solid black;
+    font-size: 16px;
+    font-style: bold;
+    color: grey;
+}
+
+.description {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid black;
+    font-weight: lighter;
+    white-space: nowrap;
+    overflow: scroll;
+}
+
+.category {
+    padding-right: 10px;
+    float: right;
+    font-size: 20px;
+    font-style: italic;
+    color: #441361;
+}
+
+.envy-bar {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid black;
+}
+
+.envy-title {
+    border: 1px solid black;
+    color: #441361;
+    padding: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-style: italic;
+}
+
+.num-envies {
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: black;
+    color: white;
+}
+
+.share-bar {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid black;
+    background-color: lightgray;
+}
+
+.share-envy {
+    width: 33%;
+    display: inline-block;
+    text-align: center;
+}
+
+.share-comments {
+    width: 33%;
+    display: inline-block;
+    text-align: center;
+}
+.share-action {
+    width: 33%;
+    display: inline-block;
+    text-align: center;
+}

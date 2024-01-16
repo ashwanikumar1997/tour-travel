@@ -1,0 +1,18 @@
+.image-container {
+    display: flex;
+  }
+  
+  .image-wrapper {
+    flex: 1;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .image {
+    max-width: 100%;
+    height: auto;
+  }
+  
