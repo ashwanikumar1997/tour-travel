@@ -96,7 +96,7 @@ function Footer() {
               </li>
               <li className="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-3101 current_page_item menu-item-3105">
                 <Link
-                  to="/tours"
+                  to="/home/tours"
                   style={{ paddingTop: "23px", paddingBottom: "23px" }}
                 >
                   Tours
@@ -104,7 +104,7 @@ function Footer() {
               </li>
               <li className="menu-item menu-item-type-post_type menu-item-object-destination menu-item-3571">
                 <Link
-                  to="/destination"
+                  to="/home/destination"
                   style={{ paddingTop: "23px", paddingBottom: "23px" }}
                 >
                   Destination
@@ -112,7 +112,7 @@ function Footer() {
               </li>
               <li className="menu-item menu-item-type-post_type menu-item-object-page menu-item-10">
                 <Link
-                  to="/about"
+                  to="/home/about"
                   style={{ paddingTop: "23px", paddingBottom: "23px" }}
                 >
                   About
@@ -120,7 +120,7 @@ function Footer() {
               </li>
               <li className="menu-item menu-item-type-post_type menu-item-object-page menu-item-3581">
                 <Link
-                  to="/contact"
+                  to="/home/contact"
                   style={{ paddingTop: "23px", paddingBottom: "23px" }}
                 >
                   Contact

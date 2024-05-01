@@ -146,15 +146,6 @@ export const formatUsPhone = (phone) => {
   }
 };
 
-export const getCurrentPage = () => {
-  const path = window.location.pathname;
-  const pathObj = path.split("/");
-  return _.get(pathObj, "1", "");
-};
-
-export const showHomeIcon = () => {
-  return inArray(getCurrentPage(), IconicPages);
-};
 
 export const getParameterByName = (name, url) => {
   if (!url) url = window.location.href;

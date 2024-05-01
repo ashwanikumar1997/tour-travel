@@ -6,11 +6,11 @@
  * @desc [description]
  **/
 
-import axios from "axios";
+import axiosInstance from "../App/AxiosInstance";
 import { GET_FEED, FEED_LOADING } from "./types";
 export const getCurrentFeed = () => (dispatch) => {
   dispatch(setFeedLoading());
-  axios
+  axiosInstance
     .get("/places")
     .then(function (res) {
       dispatch({

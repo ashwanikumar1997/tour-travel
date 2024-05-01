@@ -9,7 +9,7 @@ import React from 'react';
 //import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
-const EnvyPostGroup = ({ url, displayName, name, description, numEnvies, category, numComments }) => {
+const PostGroup = ({ url, displayName, name, description, numEnvies, category, numComments }) => {
 
     var state = {
         card: "feed-card",
@@ -42,7 +42,7 @@ const EnvyPostGroup = ({ url, displayName, name, description, numEnvies, categor
     );
 };
 
-EnvyPostGroup.propTypes = {
+PostGroup.propTypes = {
     url: PropTypes.string.isRequired,
     displayName: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -52,8 +52,8 @@ EnvyPostGroup.propTypes = {
     numComments: PropTypes.number.isRequired
 };
 
-EnvyPostGroup.defaultProps = {
+PostGroup.defaultProps = {
     type: 'text'
 };
 
-export default EnvyPostGroup;
+export default PostGroup;

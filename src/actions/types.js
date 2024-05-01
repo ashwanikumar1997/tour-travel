@@ -32,7 +32,8 @@ export const REGISTER_SUCCESS='REGISTER_SUCCESS'
 //login actions
 export const DISPLAY_LOGIN = 'DISPLAY_LOGIN';
 export const AUTH_USER_KEY = 'authUser';
-export const AUTH_TOKEN_KEY="authToken";
+export const AUTH_ACCESS_TOKEN_KEY="authToken";
+export const AUTH_REFRESH_TOKEN_KEY="refreshToken";
 export const AUTH_ID_KEY="authID";
 export const AUTH_ACCOUNT_TYPE ="auth_account_type"
 export const AGENCY_NAME = "agency-name"

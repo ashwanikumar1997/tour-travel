@@ -264,10 +264,6 @@ body,
     color: #222222;
 }
 
- ::selection {
-    background-color: #222222;
-}
-
  ::-webkit-input-placeholder {
     color: #222222;
 }

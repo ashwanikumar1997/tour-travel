@@ -8,13 +8,13 @@
  * 
 **/
 
-import axios from 'axios';
+import axiosInstance from '../App/AxiosInstance';
 import { GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_ERRORS } from './types';
 
 // GET CURRENT PROFILE
 export const getCurrentProfile = () => dispatch => {
     dispatch(setProfileLoading());
-    axios
+    axiosInstance
         .get('/accounts/me')
         .then(res =>
             dispatch({
@@ -32,7 +32,7 @@ export const getCurrentProfile = () => dispatch => {
 
 // Create Profile
 export const createProfile = (profileData, history) => dispatch => {
-    axios
+    axiosInstance
         .post('', profileData)
         .then(res => history.push('/feed'))
         .catch(err =>

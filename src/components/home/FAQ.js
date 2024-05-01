@@ -13,7 +13,7 @@ export default function FAQ() {
   };
 
   return (
-    <div style={{ marginBottom: "20px", maxWidth: "750px"}}>
+    <div style={{ marginBottom: "20px", maxWidth: "750px",backgroundColor:"#fff"}}>
       <h1
         style={{
           fontWeight: "bold",

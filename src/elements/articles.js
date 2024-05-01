@@ -51,7 +51,7 @@ export const LoadArticles = () => {
                 <Link
                   className="button"
                   style={{ marginTop: "10px" }}
-                  to="/articles"
+                  to="/home/articles"
                 >
                   Load All Articles
                 </Link>

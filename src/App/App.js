@@ -5,20 +5,11 @@
  * @modify date 2019-09-03 10:56:57
  * @desc [description]
  */
-import React, { Suspense, useState } from "react";
+import React, { Suspense, lazy } from "react";
 import jwt_decode from "jwt-decode";
-import { setCurrentUser } from "../actions/authActions";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "../store";
-// import PrivateRoute from "../components/common/PrivateRoute";
-
-import Landing from "../components/Landing";
-import Destination from "../components/destination";
-import SingleDestination from "../components/destination/single-destination";
-import setAuthToken from "../utils/setAuthToken";
-import Tours from "../components/tours";
-import SingleTour from "../components/singletour";
 import About from "../components/about";
 import Contact from "../components/contact";
 import Articles from "../components/Articles";
@@ -32,44 +23,50 @@ import PageNotFound from "../components/layout/PageNotFound";
 import Vendor from "../agencies/index";
 import VendorRegistrationForm from "../agencies/AgencyForm/AgencyForm";
 import Footer from "../components/layout/Footer";
-import Navbar from "../components/layout/Navbar";
 import AddTourPackagesView from "../agencies/agencyProfile/AddPackageView";
-import AgencyTopbar from "../agencies/topbar/components/Topbar";
-import SelectedCityShow from "../components/destination/SelectedCityShow";
-import ShowFilterCity from "../components/home/ShowFilterCity";
+import VendorRoute from "./VendorRoute";
 import AlertUserNull from "./alertNullUserLogin";
-import PrivateRoute from "./PrivateRoute";
+import Loader from "../utils/Loader";
+import UserRoute from "./UserRoute";
+import AgencyAllDataManaged from "../agencies/ViewAgency/inventory/AgencyAllDataManaged";
+import { TourBookedStatus } from "../agencies/ViewAgency/tourBooking/TourBookedStatus";
+import { flushUserSession } from "../actions/authActions";
+const Landing = lazy(() => import("../components/Landing"));
+const Destination = lazy(() => import("../components/destination"));
+const Tours = lazy(() => import("../components/tours"));
+const SingleTour = lazy(() => import("../components/singletour"));
+const SelectedCityShow = lazy(() =>
+  import("../components/destination/SelectedCityShow")
+);
+const ShowFilterCity = lazy(() => import("../components/home/ShowFilterCity"));
 
 const token = localStorage.getItem("authToken");
 
 const agentZone = [
   "/agency/himalayan-tour-and-travel",
   "/agency/himalayan-tour-and-travel/agency-details-form",
-  
   "/agency/himalayan-tour-and-travel/vendor-profile",
 ];
 
 if (token) {
-  // Set auth token header auth
-
-  // setAuthToken(token);
-  // Decode token and get user info and exp
   const decoded = jwt_decode(token);
-  // Set user and isAuthenticated
-  // store.dispatch(setCurrentUser(decoded));
-  // Check for expired token
-  //const currentTime = Date.now() / 1000;
+  const currentTime = Date.now() / 1000;
+  // console.log("decode",decoded.exp > currentTime)
+  if (decoded.exp < currentTime) {
+    flushUserSession();
+    window.location.reload();
+  }
 }
 
 const App = () => {
   const userRole = localStorage.getItem("auth_account_type");
-  const location = useLocation();
-  console.log(location.pathname);
   //  const token = localStorage.getItem("authToken")
-
+  // if (userRole == "Agency Admin") {
+  //   navigate("/agency/himalayan-tour-and-travel");
+  // }
   // const decodeToken = jwt_decode(token)
-  // const currentTime = Date.now() / 1000;
-  // // console.log(decodeToken.exp,currentTime);
+  // const currentTime = Math.floor(Date.now() / 1000);
+  // console.log(decodeToken.exp < currentTime);
   // if (decodeToken.exp && currentTime >= decodeToken.exp) {
   //   // console.log(token);
 
@@ -79,23 +76,32 @@ const App = () => {
 
   return (
     <>
-      {(userRole === "Personal" && <Navbar />) ||
-        (userRole === null && <Navbar />) ||
-        (agentZone.includes(location.pathname) && <Navbar />)}
+      {/* {agentZone.includes(location.pathname)} */}
       <AlertUserNull userRole={userRole} />
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/" element={<PrivateRoute />}>
-          <Route path="/destination" element={<Destination />} />
-          <Route path="/places/:placeid" element={<SelectedCityShow />} />
-          <Route path="/tours" element={<Tours />} />
-          <Route path="/tours/:id" element={<SingleTour />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/articles" element={<Articles />} />
-          <Route path="/articles/:id" element={<SingleArticles />} />
-          <Route path="/TestFile" element={<TestFile />} />
-          <Route path="search-city/:city/:month" element={<ShowFilterCity />} />
+        <Route
+          path="/home"
+          element={<UserRoute role="Personal" userRole={userRole} />}
+        >
+          <Route path="/home/destination" element={<Destination />} />
+          <Route path="/home/places/:placeid" element={<SelectedCityShow />} />
+          <Route path="/home/tours" element={<Tours />} />
+          <Route path="/home/tours/:id" element={<SingleTour />} />
+          <Route path="/home/about" element={<About />} />
+          <Route path="/home/contact" element={<Contact />} />
+          <Route path="/home/articles" element={<Articles />} />
+          <Route path="/home/articles/:id" element={<SingleArticles />} />
+          <Route path="/home/TestFile" element={<TestFile />} />
+          <Route
+            path="/homesearch-city/:city/:month"
+            element={<ShowFilterCity />}
+          />
+        </Route>
+        <Route
+          path="/agency"
+          element={<VendorRoute role="Agency Admin" userRole={userRole} />}
+        >
           <Route
             path="/agency/himalayan-tour-and-travel"
             element={<Vendor />}
@@ -109,10 +115,15 @@ const App = () => {
             element={<AddTourPackagesView />}
           ></Route>
           <Route
+            path="/agency/himalayan-tour-and-travel/check-tour-status"
+            element={<TourBookedStatus/>}
+          ></Route>
+          <Route
             path="/agency/himalayan-tour-and-travel/vendor-profile"
             element={<VendorProfile />}
           />
         </Route>
+
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<PageNotFound />} />
@@ -125,7 +136,7 @@ const App = () => {
 
 const AppProvider = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loader />}>
       <Provider store={store}>
         <App />
       </Provider>

@@ -1,21 +1,23 @@
 import React from "react";
-import "./index.css";
+import { ImageApiUrl } from "../../functions/constants/apiConstants";
+import "../../assets/css/agencyProfile.css";
 import profile_image from "../../assets/images/profile_image.jpg";
 
 import AgencyDetails from "./components/AgencyDetails";
 import ViewAgencyPackages from "../ViewAgency/ViewAgencyPackages";
 
 const index = () => {
-  
+  const logo = localStorage.getItem("agency-logo") 
+  const banner = localStorage.getItem("agency-banner") || ""
   
   return (
     <>
       <div className="vendor-dashboard">
         <div className="profile-section">
         
-          <div className="background-image">{/* Background image */}</div>
+          <div className="background-image" style={{backgroundImage:`url(${ImageApiUrl}${banner})`}}></div>
           <div className="profile-image">
-            <img src={profile_image} alt="Profile" />
+            <img src={logo ?`${ImageApiUrl}${logo}` : profile_image} alt="Profile" />
            
           </div>
          

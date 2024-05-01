@@ -6,28 +6,34 @@
  * @desc [description]
  */
 import React, { useEffect, useState } from "react";
-import Axios from "axios";
+import axiosInstance from "../../App/AxiosInstance";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import { useNavigate } from "react-router-dom";
+import IsLoading from "../../elements/Loading"
 
 const SearchWidget = () => {
   const [searchPlace, setSearchPlace] = useState([]);
   const [selectedCity, setSelcetedCity] = useState("");
   const [selectedMonth, setmonth] = useState("");
+  const [loading,setLoading] = useState(false)
+  const [error, setError] = useState(null);
   const [filter, setfilter] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     setSelcetedCity(event.target.value);
   };
   useEffect(() => {
-    Axios.get("/places").then((res) => {
+    axiosInstance.get("/places").then((res) => {
       setSearchPlace(res.data);
+    }).catch((error)=>{
+      setLoading(true)
+      setError(error);
     });
   }, []);
 
@@ -35,10 +41,12 @@ const navigate = useNavigate();
     e.preventDefault();
     if (selectedCity === "" || selectedMonth === "") {
       return;
-    } else{
-      navigate(`/search-city/${selectedCity}/${selectedMonth}`)
+    } else {
+      navigate(`/home/search-city/${selectedCity}/${selectedMonth}`);
     }
   };
+
+  
 
   return (
     <div className="ppb_wrapper hasbg ">
@@ -67,7 +75,7 @@ const navigate = useNavigate();
                         height: "45px",
                       }}
                     >
-                      {searchPlace.map((city, i) => (
+                      {loading === true ? <IsLoading/> : searchPlace.map((city, i) => (
                         <MenuItem
                           key={city._id}
                           value={city.city}
@@ -163,7 +171,6 @@ const navigate = useNavigate();
                                             <span className="icon ti-angle-down"></span>
                                             Advanced Search
                                         </a> */}
-                                        
                 </div>
               </form>
             </div>

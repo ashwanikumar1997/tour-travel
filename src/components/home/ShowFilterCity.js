@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Axios from "axios";
+import axiosInstance from "../../App/AxiosInstance";
 import Spinner from "../common/Spinner";
 import ContactTravelAgentForm from "../contactagent/ContactTravelAgentForm";
 
@@ -12,7 +12,7 @@ const ShowFilterCity = () => {
   const handleOpen = () => setOpen(true);
 
   useEffect(() => {
-    Axios.get("/places").then((res) => {
+    axiosInstance.get("/places").then((res) => {
       if (res.data) {
         const filterdata = res.data.filter((item) => {
           const itemCity = item.city;
@@ -42,76 +42,87 @@ const ShowFilterCity = () => {
           <Spinner />
         ) : (
           <>
-            {
-                filterCity.map((item)=>(
-                  <div key={item._id}>
-                  <div style={{ marginTop: "90px" }} >
-              <div
-                id="page_caption"
-                className="hasbg parallax"
-                style={{
-                  backgroundImage: `url('../../${item.city_img}')`,
-                
-                
-                  
-                }}
-              >
-                <div className="overlay_background visible"></div>
-                <div className="page_title_wrapper">
-                  <div className="page_title_inner">
-                    <div className="page_title_content">
-                      <h1>{item.city}</h1>
+            {filterCity.map((item) => (
+              <div key={item._id}>
+                <div style={{ marginTop: "90px" }}>
+                  <div
+                    id="page_caption"
+                    className="hasbg parallax"
+                    style={{
+                      backgroundImage: `url('${item.city_img}')`,
+                    }}
+                  >
+                    <div className="overlay_background visible"></div>
+                    <div className="page_title_wrapper">
+                      <div className="page_title_inner">
+                        <div className="page_title_content">
+                          <h1>{item.city}</h1>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <br />
-            <div style={{ backgroundColor: "lightgray", maxWidth: "630px" }}>
-              <div className="tour_attribute_rating">
-                <div className="br-theme-fontawesome-stars-o">
-                  <div className="br-widget">
-                    <a href="#" className="br-selected"></a>
-                    <a href="#" className="br-selected"></a>
-                    <a href="#" className="br-selected"></a>
-                    <a href="#" className="br-selected"></a>
-                    <a href="#"></a>
+                <br />
+                <div
+                  style={{
+                    backgroundColor: "#fff",
+                    padding: "8px",
+                    borderRadius: "8px",
+                    maxWidth: "630px",
+                  }}
+                >
+                  <div className="tour_attribute_rating">
+                    <div className="br-theme-fontawesome-stars-o">
+                      <div className="br-widget">
+                        <a href="#" className="br-selected"></a>
+                        <a href="#" className="br-selected"></a>
+                        <a href="#" className="br-selected"></a>
+                        <a href="#" className="br-selected"></a>
+                        <a href="#"></a>
+                      </div>
+                    </div>
+                    <div className="tour_attribute_rating_count">
+                      4&nbsp;reviews
+                    </div>
                   </div>
+                  <br />
+                  <strong>Best time to Visit: {item.time}</strong>
+                  <br />
+                  <strong>Language: {item.language}</strong>
+                  <br />
+                  <strong>Temperature: {item.distance}</strong>
+                  <br />
+                  <button style={{ margin: "10px" }} onClick={handleOpen}>
+                    Contact agent
+                  </button>
+                  <ContactTravelAgentForm
+                    handleOpen={handleOpen}
+                    open={open}
+                    setOpen={setOpen}
+                  />
                 </div>
-                <div className="tour_attribute_rating_count">
-                  4&nbsp;reviews
-                </div>
-              </div>
-              <br />
-              <strong>Best time to Visit: {item.time}</strong>
-              <br />
-              <strong>Language: {item.language}</strong>
-              <br />
-              <strong>Temperature: {item.distance}</strong>
-              <br />
-              <button style={{ margin: "10px" }} onClick={handleOpen}>
-                Contact agent
-              </button>
-              <ContactTravelAgentForm
-                handleOpen={handleOpen}
-                open={open}
-                setOpen={setOpen}
-              />
-            </div>
-            <br />
-            <strong
-              style={{
-                textDecoration: "underline",
-                fontSize: "20px",
-                fontWeight: "lighter",
-              }}
-            >
-              About the city
-            </strong>
-            <p style={{ fontWeight: "bolder" }}>
-              {item.info}
-              <br />
-              {/* <span
+                <br />
+                <div
+                  style={{
+                    backgroundColor: "#fff",
+                    padding: "10px",
+                    borderRadius: "8px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <strong
+                    style={{
+                      textDecoration: "underline",
+                      fontSize: "20px",
+                      fontWeight: "lighter",
+                    }}
+                  >
+                    About {item.city}
+                  </strong>
+                  <p style={{ fontWeight: "bolder", textAlign: "justify" }}>
+                    {item.city_desc}
+                    <br />
+                    {/* <span
               style={{
                 marginBottom:"30px",
                 fontSize: "18px",
@@ -125,13 +136,21 @@ const ShowFilterCity = () => {
               {" "}
               {isExpanded ? "Read Less" : "Read More"}
             </span> */}
-            </p>
-                  </div>  
-                ))
-            }
+                  </p>
+                </div>
+              </div>
+            ))}
           </>
         )}
-        <div className="inner">
+        <div
+          className="inner"
+          style={{
+            backgroundColor: "#fff",
+            padding: "10px",
+            borderRadius: "8px",
+            marginTop: "10px",
+          }}
+        >
           <div className="inner_wrapper">
             <div className="tour_related">
               <h3 className="sub_title">Related city</h3>

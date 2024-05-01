@@ -12,6 +12,7 @@ import { AlertPopUp } from "../../validation/alert";
 
 const SubscriberForm = () => {
   const [email, setEmail] = useState("");
+  const [isError, setIsError] = useState(false);
   const [error, setError] = useState("");
 
   const onsubmit = (e) => {
@@ -22,10 +23,12 @@ const SubscriberForm = () => {
     }
     createSubscriber(data).then((response) => {
       if (response) {
-        setError(response.message);
+        setError(response.data.message);
         setEmail("");
+      } else if (response.status == 400) {
+        setIsError(true);
+        setError(response.message);
       }
-      setError(response.message);
     });
   };
 
@@ -38,7 +41,9 @@ const SubscriberForm = () => {
   return (
     <div>
       {error ? (
-        <AlertPopUp text={error} />
+        <AlertPopUp severity={isError ? "error" : "success"}>
+          {error}
+        </AlertPopUp>
       ) : (
         <form
           id="mc4wp-form-1"

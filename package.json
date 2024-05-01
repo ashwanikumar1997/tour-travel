@@ -1,5 +1,5 @@
 {
-  "name": "tour-app",
+  "name": "client",
   "version": "0.1.0",
   "proxy": "http://localhost:8081/dev/",
   "private": true,
@@ -10,18 +10,13 @@
     "@material-ui/core": "^4.12.4",
     "@mui/material": "^5.14.6",
     "@mui/styled-engine-sc": "^5.12.0",
-    "@radix-ui/react-accordion": "^1.1.2",
-    "@radix-ui/react-icons": "^1.3.0",
+    "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^1.9.7",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "@tinymce/tinymce-react": "^4.3.2",
     "axios": "^0.18.0",
-    "bootstrap": "^3.4.1",
-    "class-variance-authority": "^0.7.0",
+    "bootstrap": "^5.3.2",
     "classnames": "^2.2.6",
-    "clsx": "^2.1.0",
+    "customize-cra": "^1.0.0",
     "debug": "^4.1.1",
     "eslint": "^8.49.0",
     "history": "^5.3.0",
@@ -29,27 +24,31 @@
     "jQuery": "^1.7.4",
     "jquery": "^3.4.1",
     "jwt-decode": "^2.2.0",
+    "leaflet": "^1.9.4",
     "react": "^18.2.0",
     "react-bootstrap": "^1.0.1",
+    "react-chatbot-kit": "^2.2.2",
+    "react-datepicker": "^4.25.0",
     "react-dom": "^18.2.0",
+    "react-google-login": "^5.2.2",
     "react-hook-form": "^7.45.4",
     "react-icons": "^4.12.0",
+    "react-leaflet": "^4.2.1",
     "react-modal": "^3.9.1",
     "react-redux": "^8.1.2",
     "react-router-dom": "^6.15.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
+    "react-swipeable-views": "^0.14.0",
+    "react-swipeable-views-utils": "^0.14.0",
     "redux": "^4.0.0",
-    "redux-thunk": "^2.3.0",
     "styled-components": "^5.3.11",
-    "tailwind-merge": "^2.2.0",
-    "tailwindcss-animate": "^1.0.7",
-    "web-vitals": "^2.1.4",
+    "typescript": "^5.3.3",
     "yup": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
@@ -57,10 +56,7 @@
     "web-vitals": "^3.4.0"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [

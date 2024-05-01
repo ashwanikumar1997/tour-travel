@@ -9,8 +9,6 @@
 import React, { useEffect } from "react";
 import isEmpty from "../common/helper";
 import Spinner from "../common/Spinner";
-import { ImageApiUrl } from "../../functions/constants/apiConstants";
-import Button from "@mui/material/Button";
 import ImageSlider from "../commonwidget/ImageSlider";
 
 const TourBanner = ({ tour }) => {
@@ -28,15 +26,22 @@ const TourBanner = ({ tour }) => {
     return <Spinner />;
   } else {
     return (
-      <div id="page_caption" style={{border:"none"}}>
-        <div className="page_title_small_content">
-          <h1>{tour.tourTitle}</h1>
-        </div>
+      <div
+        id="page_caption"
+        style={{
+          border: "none",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <div style={{ marginTop: "15px" }}>
           <ImageSlider
             tourImages={tour.tourImage}
             width="100%"
             height="150px"
+            button={false}
           />
         </div>
       </div>

@@ -10,7 +10,7 @@ import authReducer from './authSlice';
 import errorReducer from './errorReducer';
 import profileReducer from './profileReducer';
 import tourReducer from './tourReducer';
-import toursReducer from './toursReducer';
+import toursReducer from './toursSlice';
 import destinationReducer from './destinationReducer';
 import placeReducer from './placeReducer';
 import feedReducer from './feedReducer';

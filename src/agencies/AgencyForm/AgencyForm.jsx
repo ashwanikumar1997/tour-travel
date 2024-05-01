@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import "./AgencyFormDesign.css";
+import "../../assets/css/agencyForm.css";
+import { useNavigate } from "react-router-dom";
 import { state_data } from "./State_Mock_data";
 import Link from "@mui/material/Link";
+// import axiosInstance from "../../App/AxiosInstance";
 import Axios from "axios";
+import { useForm } from "react-hook-form";
 import {
   emailValidate,
   numberValidation,
@@ -11,59 +14,63 @@ import {
 } from "../../validation/formValidation";
 
 const userId = localStorage.getItem("authID");
-// const encodedValue = userId;
-// const decodedValue = decodeURIComponent(encodedValue); // Decode URL-encoded value
-// const originalId = decodedValue.replace(/"/g, "");
-
-const initialFormState = {
-  userId: `${userId}`,
-  agency_name: "",
-  agencyOwner: "",
-  yearOfFounding: "",
-  address: "",
-  city: "",
-  state: "",
-  country: "india",
-  pin_code: "",
-  latitude: "",
-  phoneNumber1: "",
-  phoneNumber2: "",
-  email: "",
-  Agency_GSTN: "",
-  regNumber: "",
-  documentUpload: [],
-  logoUpload: "",
-  profileImage: "",
-  galleryPictures: [],
-};
 
 export default function AgencyForm() {
-  const [formValues, setFormValues] = useState(initialFormState);
   const [errors, setErrors] = useState(true);
+  const [galleryUpload, setGalleryUpload] = useState([]);
+  const [documentUpload, setDocumentUpload] = useState([]);
+  const navigate = useNavigate();
+  const { register, handleSubmit, watch } = useForm();
 
-  // const multipleGalleryImageUpload = (e) => {
-  //   const moreImageAdd = e.target.files;
-  //   setGellarypictures([...gallery_pictures, ...moreImageAdd]);
-  // };
-  const handleChange = (event) => {
-    const { name, value, type, files } = event.target;
-
-    if (type === "file") {
-      setFormValues({
-        ...formValues,
-        [name]: files[0],
-      });
-    } else {
-      setFormValues({
-        ...formValues,
-        [name]: value,
-      });
+  const galleryImageUpload = (e) => {
+    if (e.target.files) {
+      const imageArray = Array.from(e.target.files).map((file) => file);
+      setGalleryUpload([...galleryUpload, ...imageArray]);
     }
   };
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const response = await Axios.post("/agencies", formValues).then((res) => {
-      alert(res.data);
+
+  const handleDocumentUpload = (e) => {
+    if (e.target.files) {
+      const imageArray = Array.from(e.target.files).map((file) => file);
+      setDocumentUpload([...documentUpload, ...imageArray]);
+    }
+  };
+
+  const onSubmit = async (data) => {
+    const formData = new FormData();
+    for (const key of Object.keys(galleryUpload)) {
+      formData.append("galleryPictures", galleryUpload[key]);
+    }
+    for (const key of Object.keys(documentUpload)) {
+      formData.append("documentUpload", documentUpload[key]);
+    }
+    formData.append("userId", userId);
+    formData.append("logoUpload", data.logoUpload);
+    formData.append("profileImage", data.profileImage);
+    formData.append("agency_name", data.agency_name);
+    formData.append("agencyOwner", data.agencyOwner);
+    formData.append("email", data.email);
+    formData.append("phoneNumber1", data.phoneNumber1);
+    formData.append("phoneNumber2", data.phoneNumber2);
+    formData.append("yearOfFounding", data.yearOfFounding);
+    formData.append("Agency_GSTN", data.Agency_GSTN);
+    formData.append("regNumber", data.regNumber);
+    formData.append("city", data.city);
+    formData.append("address", data.address);
+    formData.append("state", data.state);
+    formData.append("country", data.country);
+    formData.append("pin_code", data.pin_code);
+    formData.append("latitude", data.latitude);
+    console.log("formData", formData);
+    const response = await Axios.post("/agencies", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }).then((res) => {
+      if (res.status === 201) {
+        navigate("/agency/himalayan-tour-and-travel");
+      }
+    
     });
   };
 
@@ -83,7 +90,11 @@ export default function AgencyForm() {
         </div>
       </header>
       <div className="container1">
-        <form id="survey-form" onSubmit={handleSubmit}>
+        <form
+          id="survey-form"
+          onSubmit={handleSubmit(onSubmit)}
+          encType="multipart/form-data"
+        >
           <div className="labels">
             <label id="name-label" htmlFor="name">
               * Agency Name
@@ -93,14 +104,13 @@ export default function AgencyForm() {
             <input
               className="input-field"
               type="text"
-              value={formValues.agency_name}
+              {...register("agency_name", { required: true })}
               id="name"
               name="agency_name"
               placeholder="enter Agency Name"
-              onChange={handleChange}
-              required
               autoFocus
             />
+
             <span>{errors}</span>
           </div>
 
@@ -112,13 +122,11 @@ export default function AgencyForm() {
           <div className="input-tab">
             <input
               className="input-field"
-              value={formValues.agencyOwner}
+              {...register("agencyOwner")}
               type="text"
               id="owner_name"
               name="agencyOwner"
               placeholder="enter your name"
-              onChange={handleChange}
-              required
             />
           </div>
           <div className="labels">
@@ -129,13 +137,11 @@ export default function AgencyForm() {
           <div className="input-tab">
             <input
               className="input-field"
-              value={formValues.email}
+              {...register("email")}
               type="email"
               id="email"
               name="email"
               placeholder="enter your email"
-              onChange={handleChange}
-              required
             />
           </div>
           <div className="labels">
@@ -146,13 +152,11 @@ export default function AgencyForm() {
           <div className="input-tab">
             <input
               className="input-field"
-              value={formValues.phoneNumber1}
-              onChange={handleChange}
+              {...register("phoneNumber1")}
               type="text"
               id="phone_number"
               name="phoneNumber1"
               placeholder="enter your phone number"
-              required
             />
           </div>
           <div className="labels">
@@ -163,13 +167,11 @@ export default function AgencyForm() {
           <div className="input-tab">
             <input
               className="input-field"
-              value={formValues.phoneNumber2}
-              onChange={handleChange}
+              {...register("phoneNumber2")}
               type="text"
               id="phone_number2"
               name="phoneNumber2"
               placeholder="enter your alternate phone number"
-              required
             />
           </div>
           <div className="labels">
@@ -180,13 +182,11 @@ export default function AgencyForm() {
           <div className="input-tab">
             <input
               className="input-field"
-              value={formValues.yearOfFounding}
-              onChange={handleChange}
+              {...register("yearOfFounding")}
               type="text"
               id="found_year"
               name="yearOfFounding"
               placeholder="Agency Year of founding"
-              required
             />
           </div>
           <div className="labels">
@@ -200,10 +200,8 @@ export default function AgencyForm() {
               type="text"
               id="Agency_GSTN"
               name="Agency_GSTN"
-              value={formValues.Agency_GSTN}
-              onChange={handleChange}
+              {...register("Agency_GSTN")}
               placeholder="Agency GSTN"
-              required
             />
           </div>
           <div className="labels">
@@ -217,10 +215,8 @@ export default function AgencyForm() {
               type="text"
               id="registration_number"
               name="regNumber"
-              value={formValues.regNumber}
-              onChange={handleChange}
+              {...register("regNumber")}
               placeholder="Registration Number"
-              required
             />
           </div>
           <div className="labels">
@@ -234,10 +230,8 @@ export default function AgencyForm() {
               type="text"
               id="address"
               name="address"
-              value={formValues.address}
-              onChange={handleChange}
+              {...register("address")}
               placeholder="Agency Address"
-              required
             />
           </div>
           <div className="labels">
@@ -251,25 +245,20 @@ export default function AgencyForm() {
               type="text"
               id="city"
               name="city"
-              value={formValues.city}
-              onChange={handleChange}
+              {...register("city")}
               placeholder="City name agency is located"
-              required
             />
           </div>
           <div className="labels">
             <label htmlFor="dropdown">* state</label>
           </div>
           <div className="input-tab">
-            <select
-              id="dropdown"
-              name="state"
-              value={formValues.state}
-              onChange={handleChange}
-            >
+            <select id="dropdown" name="state" {...register("state")}>
               <option>-select State/UT-</option>
               {state_data.map((state, i) => (
-                <option key={i}>{state.name}</option>
+                <option key={i} value={state.name}>
+                  {state.name}
+                </option>
               ))}
             </select>
           </div>
@@ -284,10 +273,10 @@ export default function AgencyForm() {
               type="text"
               id="country"
               name="country"
+              ref={register}
+              {...register("country")}
               defaultValue="india"
               disabled
-              placeholder="country"
-              required
             />
           </div>
 
@@ -302,10 +291,8 @@ export default function AgencyForm() {
               type="text"
               id="pin_code"
               name="pin_code"
-              value={formValues.pin_code}
-              onChange={handleChange}
+              {...register("pin_code")}
               placeholder="pin code"
-              required
             />
           </div>
           <div className="labels">
@@ -319,10 +306,8 @@ export default function AgencyForm() {
               type="text"
               id="longitute_latitude"
               name="latitude"
-              value={formValues.latitude}
-              onChange={handleChange}
+              {...register("latitude")}
               placeholder="longitute/latitude"
-              required
             />
           </div>
           <div className="labels">
@@ -335,8 +320,8 @@ export default function AgencyForm() {
               className="input-field"
               type="file"
               name="documentUpload"
-              onChange={handleChange}
-              required
+              onChange={handleDocumentUpload}
+              multiple
             />
           </div>
           <div className="labels">
@@ -349,7 +334,13 @@ export default function AgencyForm() {
               className="input-field"
               type="file"
               name="logoUpload"
-              onChange={handleChange}
+              onChange={(e) => {
+                const files = e.target.files[0];
+                register("logoUpload", {
+                  value: files,
+                  type: files,
+                });
+              }}
               required
             />
           </div>
@@ -363,8 +354,13 @@ export default function AgencyForm() {
               className="input-field"
               type="file"
               name="profileImage"
-              onChange={handleChange}
-              required
+              onChange={(e) => {
+                const files = e.target.files[0];
+                register("profileImage", {
+                  value: files,
+                  type: files,
+                });
+              }}
             />
           </div>
           <div className="labels">
@@ -377,9 +373,8 @@ export default function AgencyForm() {
               className="input-field"
               type="file"
               name="galleryPictures"
-              onChange={handleChange}
+              onChange={galleryImageUpload}
               multiple
-              required
             />
           </div>
           <div className="btn">

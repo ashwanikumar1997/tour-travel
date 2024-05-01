@@ -9,21 +9,32 @@ import React from "react";
 import { Link } from "react-router-dom";
 import ImageSlider from "./ImageSlider";
 
-
 const PackageGrid = ({ tour }) => {
-  console.log("tour",tour);
   return (
-    <div className="element grid classic4_cols animated4" style={{width:"400px"}}>
-      <div className="one_fourth gallery4 classic static filterable portfolio_type themeborder" style={{width:"350px"}}>
-        <Link
-          className="tour_image"
-          to={`/tours/${tour._id}`}
-        >
+    <div
+      className="element grid classic4_cols animated4"
+      style={{ display: "flex" }}
+    >
+      <div
+        className="one_fourth gallery4 classic static filterable portfolio_type themeborder"
+        style={{ backgroundColor: "#fff" }}
+      >
+        <div className="tour_image">
           <ImageSlider tourImages={tour.tourImage} />
-          <div className="tour_price ">₹ {tour.tourPackageAmount}</div>
-        </Link>
+          <div
+            className="tour_price "
+            style={{
+              backgroundColor: "#FF4A52",
+              display: "inline",
+              padding: "5px",
+              color: "#fff",
+            }}
+          >
+            ₹ {tour.tourPackageAmount}
+          </div>
+        </div>
         <div className="portfolio_info_wrapper">
-          <Link className="tour_link" to={"/tours/"}>
+          <Link className="tour_link" to={`/home/tours/${tour._id}`}>
             <h6>
               <strong>{tour.tourTitle} Tour</strong>
             </h6>
@@ -44,8 +55,9 @@ const PackageGrid = ({ tour }) => {
               </div>
               <div className="tour_attribute_rating_count">4&nbsp;reviews</div>
             </div>
+            <br />
             <div className="tour_attribute_days">
-              <span className="ti-time"> {tour.tourDuration}</span>
+              <span> {tour.tourDuration}</span>
             </div>
           </div>
           <br className="clear"></br>

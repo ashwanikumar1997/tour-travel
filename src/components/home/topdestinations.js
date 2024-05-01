@@ -57,10 +57,10 @@ class TopDestinations extends Component {
       <div className="ppb_tour_classic one nopadding ">
         <div className="page_content_wrapper page_main_content sidebar_content full_width fixed_column">
           <div className="standard_wrapper">
-            <div id="wrapper" className="hasbg transparent">
+            <div id="wrapper" className="hasbg transparent" style={{ backgroundColor:"#fff" }}>
               <div
                 className="ppb_destination_metro one nopadding "
-                style={{ marginTop: "-10px" }}
+                
               >
                 <div className="page_content_wrapper page_main_content sidebar_content full_width fixed_column">
                   <div className="standard_wrapper">
@@ -102,7 +102,7 @@ class TopDestinations extends Component {
                           textDecoration: "underline",
                           color: "purple",
                         }}
-                        to="/destination"
+                        to="/home/destination"
                       >
                         View All Places
                       </Link>

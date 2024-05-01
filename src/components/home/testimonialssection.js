@@ -10,26 +10,21 @@ const TestimonialsSection = () => {
   return (
     <>
       <div
-        className="parallax "
-        style={{
-          //  backgroundImage: 'url(http://themegoodsthemes-pzbycso8wng.stackpathdns.com/grandtour/demo2/wp-content/uploads/2017/07/pexels-photo-259522.jpeg)',
-          height: "50vh",
-        }}
-      ></div>
-      <div
         className="one withsmallpadding ppb_header"
         style={{
-          paddingBottom: "0px !important",
           textAlign: "left",
-          padding: "60px 0 0 0",
+          marginTop: "50px",
+          backgroundColor: "#fff",
+          alignItems:"center",
+          
         }}
       >
         <div className="standard_wrapper">
           <div className="page_content_wrapper">
             <div className="inner">
-              <div style={{ margin: "auto", width: "100%" }}>
+              <div style={{ margin: "auto" }}>
                 <h2 className="ppb_title">Featured Testimonials</h2>
-                <div className="page_tagline">
+                <div className="page_tagline" style={{ color: "#000000" }}>
                   Discover your next experiences, and places.
                 </div>
               </div>
@@ -39,7 +34,11 @@ const TestimonialsSection = () => {
       </div>
       <div
         className="one withsmallpadding ppb_testimonial_column"
-        style={{ paddingBottom: "10px !important" }}
+        style={{
+          paddingBottom: "10px",
+          backgroundColor: "#fff",
+          marginBottom: "50px",
+        }}
       >
         <div className="standard_wrapper">
           <div className="page_content_wrapper">

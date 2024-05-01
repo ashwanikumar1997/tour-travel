@@ -16,8 +16,9 @@ import SubscriberWidget from "./home/subscriberwidget";
 import { getAllDestination } from "../actions/destinationActions";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Spinner from "../components/common/Spinner";
+import IsLaoding from "../elements/Loading";
 import bannerimage from "../assets/images/destination.jpg";
+import { ArrowIcon } from "../assets/icons";
 import { Link } from "react-router-dom";
 const elements = ["1", "2", "3", "4"];
 const items = [];
@@ -45,7 +46,7 @@ class Destination extends Component {
 
     let placeContent;
     if (destinations === "null" || loading) {
-      placeContent = <Spinner />;
+      placeContent = <IsLaoding />;
     } else {
       if (Object.keys(destinations.destinations).length > 0) {
         let count = 0;
@@ -54,7 +55,7 @@ class Destination extends Component {
           return <ElementGrid props={place} ctmclassName={count} key={i} />;
         });
       } else {
-        placeContent = "Sorry No topdestinations";
+        placeContent = <IsLaoding/>;
       }
     }
 
@@ -65,54 +66,53 @@ class Destination extends Component {
 
     return (
       <>
-      <Banner props={banner} />
-      
-      <div className="ppb_tour_classic one nopadding ">
-        <div className="page_content_wrapper page_main_content sidebar_content full_width fixed_column">
-          <div className="standard_wrapper">
-            <div id="wrapper" className="hasbg transparent">
-              <div
-                className="ppb_destination_metro one nopadding "
-                style={{ marginTop: "-10px" }}
-              >
-                <div className="page_content_wrapper page_main_content sidebar_content full_width fixed_column">
-                  <div className="standard_wrapper">
-                    <div
-                      id="15653405321386753074"
-                      className="portfolio_filter_wrapper gallery grid metro portrait four_cols"
-                      data-columns="4"
-                    >
-                      <Link to="/">
-                        Home
-                        <img
-                          src="back_home.png"
+        <Banner props={banner} />
+
+        <div className="ppb_tour_classic one nopadding ">
+          <div className="page_content_wrapper page_main_content sidebar_content full_width fixed_column">
+            <div className="standard_wrapper">
+              <div id="wrapper" className="hasbg transparent">
+                <div
+                  className="ppb_destination_metro one nopadding "
+                  style={{ marginTop: "-10px" }}
+                >
+                  <div className="page_content_wrapper page_main_content sidebar_content full_width fixed_column">
+                    <div className="standard_wrapper">
+                      <div
+                        id="15653405321386753074"
+                        className="portfolio_filter_wrapper gallery grid metro portrait four_cols"
+                        data-columns="4"
+                      >
+                        {" "}
+                        <h6
                           style={{
                             height: "30px",
-                            margin: "10px 0px 0px 0px",
+                            marginTop: "15px",
+                           padding:"5px"
                           }}
-                        />
-                      </Link>
-                      {/* <SelectedCountryShow/> */}
-
-                      <h6
-                        style={{
-                          fontSize: "40px",
-                          margin: "30px 0px 20px 0px ",
-                          fontFamily: "sans-serif",
-                        }}
-                      >
-                        Best Place of Himachal Pardesh:
-                      </h6>
-                      {placeContent}
+                        >
+                          <Link to="/" style={{ color:"blue",textDecoration:"underline"}}>/home</Link><span>/destination</span>
+                        </h6>
+                        {/* <SelectedCountryShow/> */}
+                        <h6
+                          style={{
+                            fontSize: "40px",
+                            margin: "30px 0px 20px 0px ",
+                            fontFamily: "sans-serif",
+                          }}
+                        >
+                          Best Place of Himachal Pardesh:
+                        </h6>
+                        {placeContent}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <SubscriberWidget />
             </div>
-            <SubscriberWidget />
           </div>
         </div>
-      </div>
       </>
     );
   }

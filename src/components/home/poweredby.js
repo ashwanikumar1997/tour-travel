@@ -21,7 +21,7 @@ const PoweredBy = () => {
         <div className="standard_wrapper">
           <div className="page_content_wrapper">
             <div className="inner">
-              <div style={{ margin: "auto", width: "100%", }}>
+              <div style={{marginTop:"30px", width: "100%" }}>
                 {location.pathname === "/contact" ? null : (
                   <AboutHimachalPardesh />
                 )}
@@ -38,7 +38,7 @@ const PoweredBy = () => {
                   <Link
                     className="button"
                     style={{ marginTop: "10px" }}
-                    to="/tours"
+                    to="/home/tours"
                   >
                     Browse All Tours
                   </Link>

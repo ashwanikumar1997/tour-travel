@@ -4,7 +4,7 @@ import WhyChooseUs from "../../components/home/whychooseus";
 
 const AddPackageView = () => {
   return (
-    <div style={{display:"flex",flexWrap:"wrap", alignItems:"center",justifyContent:"center", marginBottom:"15px"}}>
+    <div style={{display:"flex",flexWrap:"wrap", alignItems:"center",justifyContent:"center", marginBottom:"15px",marginTop:"-80px"}}>
       <div>
         <AddTourPackages />
       </div>

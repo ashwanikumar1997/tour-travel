@@ -5,16 +5,16 @@
  * @modify date 2019-09-03 10:54:19
  * @desc [description]
  */
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-export default function ElementGrid(props) {
-  
+import IsLaoding from "./Loading";
 
-//   useEffect(()=>{
-//     const data =  Axios.get(`places/${placeid}`);
-//   const placedata =  data.json();
-//  setSingalPlaceData(placedata)
-//   },[])
+export default function ElementGrid(props) {
+  const [isLoading,setIsloading]=useState(true)
+
+if(!props.props){
+  return <IsLaoding/>
+}
   var Class = "";
   if (
     props.ctmClass == 1 ||
@@ -28,7 +28,7 @@ export default function ElementGrid(props) {
     <div
       className={"element grid center classic4_cols " + Class + " animated2"}
     >
-       <Link to={"/places/" + props.props._id}>
+       <Link to={"/home/places/" + props.props._id}>
       <div
         className="one_fourth gallery4 grid static filterable portfolio_type themeborder"
         style={{ backgroundImage: "url(" + props.props.city_img + ")" }}

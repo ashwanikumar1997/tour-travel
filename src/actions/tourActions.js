@@ -1,10 +1,10 @@
 
-import axios from 'axios';
+import axiosInstance from '../App/AxiosInstance';
 import { TOUR_LOADING, GET_TOUR } from './types';
 
 export const getTour = (id) => dispatch => {
     dispatch(setTourLoading());
-    axios
+    axiosInstance
         .get('/tours/' + id)
         .then(function (res) {
           

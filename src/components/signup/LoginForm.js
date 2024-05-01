@@ -78,12 +78,13 @@ function Login() {
       if (res.accountType === "Agency Admin") {
         window.location = "/agency/himalayan-tour-and-travel";
       } else {
-        window.location = "/";
+        window.location = "/home/destination";
       }
     });
   }
   return (
-    <div style={{marginTop:"100px",backgroundColor:"#ffff",borderRadius:"8px", display:"flex", flexWrap:"wrap"}}>
+    <div style={{marginTop:"100px",display:"flex", alignItems:"center",justifyContent:"center"}}>
+      <div style={{backgroundColor:"#ffff",borderRadius:"8px",marginBottom:"10px"}}>
       <ThemeProvider theme={defaultTheme} >
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -146,6 +147,7 @@ function Login() {
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
+      </div>
     </div>
   );
 }

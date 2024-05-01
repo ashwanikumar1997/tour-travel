@@ -15,7 +15,7 @@ export const ShowNearbyPlaces = ({ places }) => {
       }}
     >
       {places?.map((place) => (
-        <Link to={"/places/" + place._id}>
+        <Link to={"/home/places/" + place._id}>
           <div
             style={{
               borderRadius: "8px",
@@ -24,7 +24,7 @@ export const ShowNearbyPlaces = ({ places }) => {
               display: "flex",
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
-              backgroundImage: `url(../${place.city_img})`,
+              backgroundImage: `url(${place.city_img})`,
             }}
             key={place._id}
           ></div>

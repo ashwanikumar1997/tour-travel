@@ -10,8 +10,12 @@ import { loginUser } from "../../actions/authActions";
 import { Link } from "react-router-dom";
 import { login as authLogin } from "../../reducers/authSlice";
 import { registerUser } from "../../actions/authActions";
-import Appicon from "../../assets/images/Himalayan Tour.png";
+import Logo from "../../assets/logo/HimalayanTour&TravelLogo.png";
+import { ArrowIcon } from "../../assets/icons";
 import { useDispatch } from "react-redux";
+import config from "../../utils/config";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleLogin } from "react-google-login";
 import {
   Button,
   Typography,
@@ -19,7 +23,6 @@ import {
   Box,
   Grid,
   CssBaseline,
-  Checkbox,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Copyright } from "./LoginForm";
@@ -27,12 +30,17 @@ import TextFieldGroup from "../common/TextFieldGroup";
 
 const defaultTheme = createTheme();
 
+let typeOfAccount = [
+  { label: "Agency", value: "Agency Admin" },
+  { label: "Personal", value: "Personal" },
+];
+
 function Register(props) {
   const { errors } = props;
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [accountType, setAccountType] = useState("");
+  const [accountType, setAccountType] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -82,87 +90,129 @@ function Register(props) {
       });
   }
 
+  const responseGoogle = (credentialResponse) => {
+    console.log(credentialResponse);
+    // Handle the response from Google
+  };
+
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Link to="/">
-          Home
-          <img src="back_home.png" style={{ height: "30px", float: "left" }} />
-        </Link>
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <img src={Appicon} alt="app-icon" style={{ height: "180px" }} />
-          <Typography component="h1" variant="h5">
-            Sign In
-          </Typography>
-
-          <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
-            <TextFieldGroup
-              placeholder="Username"
-              name="name"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              error={errors}
-            />
-            <TextFieldGroup
-              placeholder="Email Address"
-              name="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              error={errors}
-            />
-            <TextFieldGroup
-              placeholder="Password"
-              name="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              error={errors}
-            />
-            <select
-              value={accountType}
-              onChange={(e) => setAccountType(e.target.value)}
+    <div
+      style={{
+        marginTop: "100px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "#fff",
+          marginBottom: "10px",
+          borderRadius: "8px",
+        }}
+      >
+        <ThemeProvider theme={defaultTheme}>
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Link to="/">
+              <ArrowIcon style={{ height: "30px" }} />
+            </Link>
+            <Box
+              sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-              <option>--select Account Type--</option>
-              <option>Personal</option>
-              <option>Agency Admin</option>
-            </select>
+              <img src={Logo} alt="app-icon" style={{ height: "100px" }} />
+              <Typography component="h1" variant="h5">
+                Sign In
+              </Typography>
 
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Enjoy OurServices
-                </Link>
-              </Grid>
-              <br />
-              <Grid item>
-                <Link to="/login" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
+              <Box
+                component="form"
+                onSubmit={onSubmit}
+                noValidate
+                sx={{ mt: 1 }}
+              >
+                <TextFieldGroup
+                  placeholder="Username"
+                  name="name"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  error={errors}
+                />
+                <TextFieldGroup
+                  placeholder="Email Address"
+                  name="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  error={errors}
+                />
+                <TextFieldGroup
+                  placeholder="Password"
+                  name="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  error={errors}
+                />
+                <div style={{ marginTop: "5px" }}>
+                  <select
+                    value={accountType}
+                    onChange={(e) => setAccountType(e.target.value)}
+                  >
+                    <option>--select Account Type--</option>
+                    {typeOfAccount.map((type) => (
+                      <option value={type.value} key={type.value}>
+                        {type.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Sign In
+                </Button>
+                <Grid container>
+                  <Grid item xs>
+                    <Link href="#" variant="body2">
+                      Enjoy OurServices
+                    </Link>
+                  </Grid>
+                  <br />{" "}
+                  <Grid item>
+                    <Link to="/login" variant="body2">
+                      {"Don't have an account? Sign Up"}
+                    </Link>
+                  </Grid>
+                </Grid>
+                <br />
+                <Grid item>
+                  {/* <GoogleLogin
+                    clientId="616368360378-h0eukpbm474a8cj3l4tvlksq10u8fhtl.apps.googleusercontent.com"
+                    // clientId="616368360378-h0eukpbm474a8cj3l4tvlksq10u8fhtl.apps.googleusercontent.com"
+                    buttonText="Login with Google"
+                    onSuccess={responseGoogle}
+                    onFailure={responseGoogle}
+                    cookiePolicy={"single_host_origin"}
+                  /> */}
+                </Grid>
+              </Box>
+            </Box>
+            <Copyright sx={{ mt: 8, mb: 4 }} />
+          </Container>
+        </ThemeProvider>
+      </div>
+    </div>
   );
 }
 

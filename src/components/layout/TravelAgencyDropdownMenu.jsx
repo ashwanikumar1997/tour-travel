@@ -1,6 +1,7 @@
 import * as React from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import { UserIcon } from "../../assets/icons";
+import { Link } from "react-router-dom";
 
 export default function SelectSmall() {
   const [TravelAgentzone, setTravelAgentzone] = React.useState("");
@@ -25,9 +26,9 @@ export default function SelectSmall() {
             Join For Free
           </Dropdown.Item>
           <hr />
-          <Dropdown.Item href="/">Sign In</Dropdown.Item>
-          <hr />
-          <Dropdown.Item href="/">Something else</Dropdown.Item>
+          <Dropdown.Item ><Link to="/login" style={{textDecoration:"none"}}>Sign In</Link></Dropdown.Item>
+          {/* <hr /> */}
+          {/* <Dropdown.Item href="/">Something else</Dropdown.Item> */}
           <hr />
           <Dropdown.Item href="/agency/himalayan-tour-and-travel/add-tour-packages">
             Add Tour Packages Free

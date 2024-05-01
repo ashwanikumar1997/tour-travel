@@ -1,14 +1,7 @@
-import React from 'react';
-import Topbar from './topbar/components/Topbar'
+import React from "react";
 
- const AgencyLayout = ({children}) => {
-  return (
-    <>
-        <Topbar/>
-        {children}
-   
-    </>
-  )
-}
+const AgencyLayout = ({ children }) => {
+  return <>{children}</>;
+};
 
 export default AgencyLayout;

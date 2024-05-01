@@ -32,12 +32,6 @@ const ResponsiveGridLayout = ({ }) => {
     );
 };
 
-ResponsiveGridLayout.propTypes = {
 
-};
-
-ResponsiveGridLayout.defaultProps = {
-
-};
 
 export default ResponsiveGridLayout;

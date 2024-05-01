@@ -16,18 +16,17 @@ import { clearCurrentProfile } from "../../actions/profileActions";
 import { getSearchResults } from "../../actions/searchActions";
 import logo from "../../assets/images/logo@2x.png";
 import white_logo from "../../assets/logo/logo.png";
-import "../../assets/css/reset.css";
-import "../../assets/css/wordpress.css";
-import "../../assets/css/animation.css";
-import "../../assets/css/ilightbox/ilightbox.css";
-import "../../assets/css/jqueryui/custom.css";
-import "../../assets/js/flexslider/flexslider.css";
-import "../../assets/css/tooltipster.css";
-import "../../assets/css/odometer-theme-minimal.css";
+// import "../../assets/css/reset.css";
+// import "../../assets/css/wordpress.css";
+// import "../../assets/css/animation.css";
+// import "../../assets/css/ilightbox/ilightbox.css";
+// import "../../assets/css/jqueryui/custom.css";
+// import "../../assets/css/tooltipster.css";
+// import "../../assets/css/odometer-theme-minimal.css";
 import "../../assets/css/screen.css";
 import "../../assets/css/menus/leftalignmenu.css";
 import "../../assets/css/font-awesome.min.css";
-import "../../assets/css/themify-icons.css";
+// import "../../assets/css/themify-icons.css";
 import "../../assets/css/grid.css";
 import "../../assets/css/admin-ajax.css";
 import "../../assets/css/fontawesome-stars-o.css";
@@ -45,7 +44,6 @@ export const Navbar = () => {
   const location = useLocation();
   let userType = localStorage.getItem("auth_account_type");
 
-  console.log(userType);
   const design = ({ isActive }) => {
     return {
       fontWeight: isActive ? "bold" : "normal",
@@ -121,9 +119,9 @@ export const Navbar = () => {
             </div>
             <div id="logo_transparent" className="logo_container">
               <div className="logo_align">
-                <NavLink className="logo_wrapper default" to="/">
+                <a className="logo_wrapper default" href="/">
                   <img src={white_logo} alt="logo" style={{maxWidth:"50px", maxHeight:"30px"}} />
-                </NavLink>
+                </a>
               </div>
             </div>
             <div style={{ marginTop: "5px" }}>
@@ -141,14 +139,14 @@ export const Navbar = () => {
                           </NavLink>
                         </li>
                         <li className="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-6">
-                          <NavLink to="/articles" style={design}>
+                          <NavLink to="/home/articles" style={design}>
                             Articles
                           </NavLink>
                         </li>
                         <li className="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-3101 current_page_item menu-item-3105">
                           <NavLink
                             className="nav-link"
-                            to="/tours"
+                            to="/home/tours"
                             style={design}
                           >
                             Tours
@@ -157,7 +155,7 @@ export const Navbar = () => {
                         <li className="menu-item menu-item-type-post_type menu-item-object-destination menu-item-3571">
                           <NavLink
                             className="nav-link"
-                            to="/destination"
+                            to="/home/destination"
                             style={design}
                           >
                             Destination
@@ -166,7 +164,7 @@ export const Navbar = () => {
                         <li className="menu-item menu-item-type-post_type menu-item-object-page menu-item-10">
                           <NavLink
                             className="nav-link"
-                            to="/about"
+                            to="/home/about"
                             style={design}
                           >
                             About
@@ -175,7 +173,7 @@ export const Navbar = () => {
                         <li className="menu-item menu-item-type-post_type menu-item-object-page menu-item-3581">
                           <NavLink
                             className="nav-link"
-                            to="/contact"
+                            to="/home/contact"
                             style={design}
                           >
                             Contact

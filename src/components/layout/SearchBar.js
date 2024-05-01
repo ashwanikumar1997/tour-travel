@@ -1,22 +1,34 @@
 import React, { useState, useEffect } from "react";
-import Axios from "axios";
+import axiosInstance from "../../App/AxiosInstance";
 import { Link, useNavigate } from "react-router-dom";
+import IsLoading from "../../elements/Loading";
 import "./search.css";
 
 const Search = () => {
   const [searchInput, setSearchInput] = useState("");
+  const [loading, setLoading] = useState(false);
   const [city, setCity] = useState([]);
+  const [error, setError] = useState(null);
   const [keyvalue, setKeyvalue] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     try {
       (async () => {
-        const reponse = await Axios.get("/places/search?place=" + searchInput);
-        setCity(reponse.data);
+        if (!searchInput) {
+          return;
+        } else {
+          const response = await axiosInstance.get(
+            "/places/search?place=" + searchInput
+          );
+          console.log(response)
+          setCity(response.data);
+        }
       })();
     } catch (error) {
       console.log("error in searching city", error);
+      setLoading(true);
+      setError(error);
     }
   }, [searchInput]);
 
@@ -48,16 +60,18 @@ const Search = () => {
             />
           </div>
 
-          {searchInput === "" ? null : (
+          {error && loading ? (
+            <IsLoading />
+          ) : searchInput === "" ? null : (
             <p className="cityparagraph">
               {city.map((city) => (
                 <div key={city._id}>
                   {keyvalue === "Enter" ? (
-                    navigate(`/places/${city._id}`)
+                    navigate(`/home/places/${city._id}`)
                   ) : (
                     <Link
                       className="text"
-                      to={`/places/${city._id}`}
+                      to={`/home/places/${city._id}`}
                       style={{ cursor: "pointer" }}
                       onClick={() => setSearchInput("")}
                     >

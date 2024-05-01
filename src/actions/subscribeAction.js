@@ -1,10 +1,10 @@
 import { SUBSCRIBE_EMAIL,SUBSCRIBE_LOADING } from './types';
-import axios from 'axios';
+import axiosInstance from '../App/AxiosInstance';
 
 
 export const getSubscribe = () => dispatch => {
     dispatch(setSubscribeLoading());
-    axios
+    axiosInstance
         .get('/accounts/me')
         .then(res =>
             dispatch({

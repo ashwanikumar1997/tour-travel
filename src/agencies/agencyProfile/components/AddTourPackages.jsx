@@ -1,16 +1,36 @@
 import React, { useState } from "react";
-import "./AddTourPackages.css";
-import { Link } from "react-router-dom";
-import Axios from "axios";
+import "../../../assets/css/addTourPackage.css";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { TextField, Autocomplete } from "@mui/material";
+import axiosInstance from "../../../App/AxiosInstance";
+
+const tourduration = [
+  { label: "1 days, 1 night" },
+  { label: "2 days, 1 night" },
+  { label: "3 days, 2 night" },
+  { label: "4 days, 3 night" },
+  { label: "5 days, 4 night" },
+  { label: "6 days, 5 night" },
+  { label: "7 days, 6 night" },
+  { label: "8 days, 7 night" },
+  { label: "9 days, 8 night" },
+  { label: "10 days, 9 night" },
+  { label: "11 days, 10 night" },
+  { label: "12 days, 11 night" },
+  { label: "13 days, 12 night" },
+  { label: "14 days, 13 night" },
+  { label: "15 days, 14 night" },
+];
 
 const AddTourPackages = () => {
-  const [tourTitle, seTourTitle] = useState("");
-  const [tourPackageAmount, setTourPackageAmount] = useState("");
-  const [tourDuration, setTourDuration] = useState("");
-  const [tourStartCity, setTourStartCity] = useState("");
-  const [endTourCity, setEndTourCity] = useState("");
   const [tourImage, setTourImage] = useState([]);
   const [errors, setErrors] = useState("");
+
+  const { register, handleSubmit } = useForm();
+
+  const navigate = useNavigate();
+
   const handleTourPictures = (e) => {
     const TourimageUpload = e.target.files;
     if (tourImage.length <= 9) {
@@ -20,41 +40,35 @@ const AddTourPackages = () => {
     }
   };
 
-  const resetField = () => {
-    seTourTitle("");
-    setTourStartCity("");
-    setEndTourCity("");
-    setTourDuration("");
-    setTourPackageAmount("");
-   
-  };
+  let ownerId = localStorage.getItem("authID");
+  let agency_name = localStorage.getItem("agency-name");
 
-
-  let ownerId = localStorage.getItem("authID")
-  let agency_name = localStorage.getItem("agency-name")
-  const handleSubmit = async () => {
-    // e.preventDefault();
-   
+  const onSubmit = async (data) => {
     try {
-      const formdata = new FormData();
-      formdata.append("ownerId", ownerId);
-      formdata.append("agency_name", agency_name);
-      formdata.append("tourTitle", tourTitle);
-      formdata.append("tourPackageAmount", tourPackageAmount);
-      formdata.append("tourDuration", tourDuration);
-      formdata.append("tourStartCity", tourStartCity);
-      formdata.append("endTourCity", endTourCity);
-      tourImage.forEach((image, index) => {
-        formdata.append(`tourImage`, image);
-      });
-
-      await Axios.post("/tours/create-tours", formdata, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }).then((res) => {
-        resetField();
-      });
+      if (ownerId && agency_name) {
+        const formdata = new FormData();
+        formdata.append("ownerId", ownerId);
+        formdata.append("agency_name", agency_name);
+        formdata.append("tourTitle", data.tourTitle);
+        formdata.append("tourPackageAmount", data.tourPackageAmount);
+        formdata.append("tourDuration", data.tourDuration);
+        formdata.append("tourStartCity", data.tourStartCity);
+        formdata.append("endTourCity", data.endTourCity);
+        for (let key of Object.keys(tourImage)) {
+          formdata.append("tourImage", tourImage[key]);
+        }
+        await axiosInstance
+          .post("/tours/create-tours", formdata, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            if (res.status === 201) {
+              navigate("/agency/himalayan-tour-and-travel");
+            }
+          });
+      }
     } catch (error) {
       console.log("error", error);
     }
@@ -63,16 +77,18 @@ const AddTourPackages = () => {
   return (
     <div className="main">
       <header>
-        <div className="text-box1" style={{color:"black"}}>
-          <h1 id="title" style={{color:"black"}}>Agency Packages Form</h1>
+        <div className="text-box1" style={{ color: "black" }}>
+          <h1 id="title" style={{ color: "black" }}>
+            Agency Packages Form
+          </h1>
           <hr />
-          <p id="description" >
+          <p id="description">
             Fill your Packages get best experience our services
           </p>
         </div>
       </header>
       <div className="container-form">
-        <form id="survey-form">
+        <form id="survey-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="labels">
             <label id="name-label" htmlFor="name">
               * Agency Name
@@ -83,7 +99,9 @@ const AddTourPackages = () => {
               className="input-field"
               type="text"
               id="name"
+              defaultValue={agency_name}
               name="agency_name"
+              disabled={true}
               placeholder="enter Agency Name"
               required
               autoFocus
@@ -101,8 +119,7 @@ const AddTourPackages = () => {
               type="text"
               id="tour_title"
               name="tour_title"
-              value={tourTitle}
-              onChange={(e) => seTourTitle(e.target.value)}
+              {...register("tourTitle", { required: true })}
               placeholder="enter tour title"
               required
             />
@@ -118,8 +135,7 @@ const AddTourPackages = () => {
               type="text"
               id="start_tour_from"
               name="start_tour_from"
-              value={tourStartCity}
-              onChange={(e) => setTourStartCity(e.target.value)}
+              {...register("tourStartCity", { required: true })}
               placeholder="Starting Tour city"
               required
             />
@@ -136,8 +152,7 @@ const AddTourPackages = () => {
               type="text"
               id="end_tour_where"
               name="end_tour_where"
-              value={endTourCity}
-              onChange={(e) => setEndTourCity(e.target.value)}
+              {...register("endTourCity", { required: true })}
               placeholder="End Tour city"
               required
             />
@@ -153,27 +168,27 @@ const AddTourPackages = () => {
               type="text"
               id="tour_amount"
               name="tour_amount"
-              value={tourPackageAmount}
-              onChange={(e) => setTourPackageAmount(e.target.value)}
+              {...register("tourPackageAmount", { required: true })}
               placeholder="Tour Package Amount"
               required
             />
           </div>
           <div className="labels">
-            <label id="tour_durationl" htmlFor="tour_duration">
+            <label id="tour_duration" htmlFor="tour_duration">
               * Tour Duration
             </label>
           </div>
           <div className="input-tab">
-            <input
-              className="input-field"
-              type="text"
-              id="tour_duration"
-              value={tourDuration}
-              name="tour_duration"
-              placeholder="Tour Duration"
-              onChange={(e) => setTourDuration(e.target.value)}
-              required
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={tourduration}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  {...register("tourDuration", { required: true })}
+                />
+              )}
             />
           </div>
           <div className="labels">
@@ -192,8 +207,8 @@ const AddTourPackages = () => {
             />
             <span style={{ color: "red" }}>{errors}</span>
           </div>
-          <div className="btn">
-            <button id="submit" onClick={handleSubmit} type="button">
+          <div style={{ justifyContent: "center", alignItems: "center" }}>
+            <button id="submit" type="submit">
               Submit
             </button>
           </div>

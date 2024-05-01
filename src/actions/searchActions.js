@@ -5,11 +5,11 @@
  * @modify date 2019-09-03 10:48:25
  * @desc [description]
  */
-import axios from 'axios';
+import axiosInstance from '../App/AxiosInstance';
 import { SEARCH_RESULTS } from './types';
 
 export const getSearchResults = query => dispatch => {
-    axios
+    axiosInstance
         .get(`/places?param=${query}`)
         .then(res => {
             // Save to localStorage

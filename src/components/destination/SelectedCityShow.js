@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import {Modal,Box} from "@mui/material";
-import Spinner from "../common/Spinner";
+import { Modal, Box } from "@mui/material";
+import Loader from "../../utils/Loader";
 import { useParams, Link } from "react-router-dom";
-import Axios from "axios";
+import axiosInstance from "../../App/AxiosInstance";
 import ContactTravelAgentForm from "../contactagent/ContactTravelAgentForm";
 import { ShowNearbyPlaces } from "./ShowNearbyPlaces";
-import { getAllPlaces } from "../../utils/apiHelper";
+import { getAllPlaces, getNearByPlace } from "../../utils/apiHelper";
 import { AlertPopUp } from "../../validation/alert";
+import MapView from "../map/MapView";
 
 let message = "Booking created successfully";
 
@@ -22,21 +23,18 @@ const style = {
   p: 4,
 };
 
-
-
-
 const SelectedCityShow = () => {
   const [showSingleCityData, setShowSingleCityData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [cityPackages, setCityPackages] = useState([]);
+  const [cityPackages, setCityPackages] = useState(null);
   const [nearbyPlaces, setNearbyPlaces] = useState(null);
   const [open, setOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const handleOpen = () => setOpen(true);
-
+ 
+console.log(showSingleCityData)
   // const [isExpanded, setIsExpanded] = useState(false);
   // const [paragraphText, setParagraphText] = useState(showSingleCityData.info);
-
   const { placeid } = useParams();
   // const handleReadExpand = () => {
   //   setIsExpanded(!isExpanded);
@@ -46,31 +44,34 @@ const SelectedCityShow = () => {
   //     setParagraphText(showSingleCityData.info); // Show the full paragraph
   //   }
   // };
-  
+
   const handleClose = () => setIsSuccess(false);
-if (isSuccess) {
-  setTimeout(()=>{handleClose()},1000)
-}
+  if (isSuccess) {
+    setTimeout(() => {
+      handleClose();
+    }, 1000);
+  }
 
   useEffect(() => {
     if (placeid) {
-      Axios.get(`/places/${placeid}`).then((res) => {
+      axiosInstance.get(`/places/${placeid}`).then((res) => {
         setShowSingleCityData(res.data);
         setIsLoading(false);
       });
     }
-    getAllPlaces().then((data) => {
-      if (data) {
-        setNearbyPlaces(data);
+
+    getNearByPlace(placeid).then((response) => {
+      if (response.data) {
+        setNearbyPlaces(response.data);
       }
     });
   }, [placeid]);
 
   useEffect(() => {
     if (showSingleCityData) {
-      Axios.get(`/tours/${showSingleCityData.city}`)
+      axiosInstance.get(`/tours/${showSingleCityData._id}`)
         .then((res) => {
-          setCityPackages([res.data]);
+          setCityPackages(res.data);
         })
         .catch((error) => {
           console.log("error", error);
@@ -80,11 +81,18 @@ if (isSuccess) {
     }
   }, [showSingleCityData]);
 
+  useEffect(()=>{
+    document.title = showSingleCityData?.city
+    return()=>{
+      document.title = 'Himalayan Travel App';
+    }
+  },[showSingleCityData])
+
   return (
     <>
       <div id="page_content_wrapper" className="hasbg ">
         {isLoading ? (
-          <Spinner />
+          <Loader />
         ) : (
           <>
             <Modal
@@ -112,7 +120,7 @@ if (isSuccess) {
                     marginBottom: "10px",
                   }}
                 >
-                  <img src={`../${showSingleCityData.city_img}`} />
+                  <img src={showSingleCityData.city_img} loading="lazy" />
                 </div>
                 <div
                   style={{
@@ -164,32 +172,34 @@ if (isSuccess) {
                       <br />
                       <span>Language : {showSingleCityData.language}</span>
                       <br />
-                      <span>Temperature : {showSingleCityData.distance}</span>
+                      <span>Temperature : {showSingleCityData.temp}</span>
                     </div>
                     <br />
-                    <Link to={`/tours/${cityPackages._id}`}>
-                      <button
-                        style={{
-                          margin: "10px",
-                          border: "none",
-                          padding: "10px",
-                          backgroundColor: "#f1f1f1",
-                          cursor: "pointer",
-                          color: "#555",
-                        }}
-                        onMouseOver={(e) =>
-                          (e.target.style.backgroundColor = "#7bbeed")
-                        }
-                        onMouseOut={(e) =>
-                          (e.target.style.backgroundColor = "#f1f1f1")
-                        }
-                        onClick={handleOpen}
-                      >
-                        {cityPackages.length > 0 ? cityPackages.length : 0}
-                        <br />
-                        Packages
-                      </button>
-                    </Link>{" "}
+                    
+                        <Link >
+                          <button
+                            style={{
+                              margin: "10px",
+                              border: "none",
+                              padding: "10px",
+                              backgroundColor: "#f1f1f1",
+                              cursor: "pointer",
+                              color: "#555",
+                            }}
+                            onMouseOver={(e) =>
+                              (e.target.style.backgroundColor = "#7bbeed")
+                            }
+                            onMouseOut={(e) =>
+                              (e.target.style.backgroundColor = "#f1f1f1")
+                            }
+                            onClick={handleOpen}
+                          >
+                            {cityPackages.length > 0 ? cityPackages.length : 0}
+                            <br />
+                            Packages
+                          </button>
+                        </Link>
+                      {" "}
                     <button
                       style={{
                         margin: "10px",
@@ -265,26 +275,32 @@ if (isSuccess) {
             <br />
 
             <br />
-            <div style={{backgroundColor:"#fff",padding:"8px",borderRadius:"8px", marginBottom:"8px"}}>
-            <strong
+            <div
               style={{
-                textDecoration: "underline",
-                fontSize: "25px",
+                backgroundColor: "#fff",
+                padding: "8px",
+                borderRadius: "8px",
+                marginBottom: "8px",
               }}
             >
-              {showSingleCityData.city} Overview
-            </strong>
-            <p
-              style={{
-                whiteSpace: "pre-line",
-                lineHeight: "1.5",
-                color: "#555",
-                textAlign:"justify",
-                
-              }}
-            >
-              {showSingleCityData.info}
-              {/* <span
+              <strong
+                style={{
+                  textDecoration: "underline",
+                  fontSize: "25px",
+                }}
+              >
+                {showSingleCityData.city} Overview
+              </strong>
+              <p
+                style={{
+                  whiteSpace: "pre-line",
+                  lineHeight: "1.5",
+                  color: "#555",
+                  textAlign: "justify",
+                }}
+              >
+                {showSingleCityData.city_desc}
+                {/* <span
               style={{
                 marginBottom:"30px",
                 fontSize: "18px",
@@ -298,11 +314,24 @@ if (isSuccess) {
               {" "}
               {isExpanded ? "Read Less" : "Read More"}
             </span> */}
-            </p>
+              </p>
+            </div>
+            <div>
+              {
+                showSingleCityData && <MapView latitude={showSingleCityData.latitude} longitude ={showSingleCityData.longitude} city={showSingleCityData.city}/>
+              }
             </div>
           </>
         )}
-        <div className="inner" style={{backgroundColor:"#fff",padding:"10px",borderRadius:"8px", marginTop:"8px"}}>
+        <div
+          className="inner"
+          style={{
+            backgroundColor: "#fff",
+            padding: "10px",
+            borderRadius: "8px",
+            marginTop: "8px",
+          }}
+        >
           <div className="inner_wrapper">
             <div className="tour_related">
               <h3 className="sub_title">Related city</h3>
@@ -312,13 +341,7 @@ if (isSuccess) {
                 data-columns="4"
               ></div>
               <div className="sidebar_content full_width ">
-                <blockquote>
-                  <p>
-                    Santorini is essentially what remains after an enormous
-                    volcanic eruption that destroyed the earliest settlements on
-                    a formerly single island
-                  </p>
-                </blockquote>
+              
                 <h4 className="p1">
                   <span className="s1">Exploring the Area</span>
                 </h4>

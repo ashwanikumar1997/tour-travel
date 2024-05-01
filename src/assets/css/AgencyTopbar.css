@@ -1,0 +1,31 @@
+.top-bar {
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 10px 20px;
+    color: white;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+  
+  .logo span {
+    font-size: 1.2rem;
+  }
+  
+  .nav-links a {
+    color: white;
+    margin-left: 20px;
+  }
+  
+  

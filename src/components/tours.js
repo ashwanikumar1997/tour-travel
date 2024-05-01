@@ -11,18 +11,22 @@ import Banner from "./home/banner";
 import ElementGrid from "./commonwidget/packagegrid";
 import PoweredBy from "./home/poweredby";
 import bannerimage from "../assets/images/tour.jpg";
-import Axios from "axios";
-
-
+import axiosInstance from "../App/AxiosInstance";
+import { FilterTourPackage } from "./common/FilterTourPackage";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { filterTours } from "../reducers/toursSlice";
 
 function Tours() {
-  const [tourPackagesData, setTourPackagesData] = useState([]);
+  const tourSData = useSelector((state) => state.tours.tours);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    Axios.get("/tours")
+    axiosInstance
+      .get("/tours")
       .then((res) => {
         if (res.data) {
-          setTourPackagesData(res.data);
+          dispatch(filterTours(res.data));
         }
       })
       .catch((error) => console.log(error));
@@ -43,15 +47,27 @@ function Tours() {
         style={{ marginBottom: "50px" }}
       >
         <div className="page_content_wrapper page_main_content sidebar_content full_width fixed_column">
-          <div className="standard_wrapper">
+          <div style={{ display: "flex", flexDirection: "row" }}>
             <div
-              id="1565323702552895033"
-              className="portfolio_filter_wrapper gallery classNameic four_cols"
-              data-columns="4"
+              style={{
+                backgroundColor: "#fff",
+                margin: "10px",
+                padding: "10px",
+              }}
             >
-              {tourPackagesData.map((tour) => (
-                <ElementGrid tour={tour} key={tour._id} />
-              ))}
+              <FilterTourPackage />
+            </div>
+            <div className="standard_wrapper"  >
+              <div
+                id="1565323702552895033"
+                className="portfolio_filter_wrapper gallery classNameic four_cols"
+                data-columns="4"
+                style={{ display: "flex", flexWrap: "wrap" }}
+              >
+                {tourSData.map((tour) => (
+                  <ElementGrid tour={tour} key={tour._id} />
+                ))}
+              </div>
             </div>
           </div>
         </div>

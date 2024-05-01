@@ -7,7 +7,7 @@
  * @desc [description]
  *
  **/
-import axios from "axios";
+import axiosInstance from "../App/AxiosInstance";
 import {
   GET_DESTINATION,
   DESTINATION_LOADING,
@@ -16,7 +16,7 @@ import {
 } from "./types";
 export const getAllDestination = () => (dispatch) => {
   dispatch(setDestinationLoading());
-  axios
+  axiosInstance
     .get("/places")
     .then(function (res) {
       dispatch({
@@ -41,7 +41,7 @@ export const setDestinationLoading = () => {
 
 export const getPlace = (id) => (dispatch) => {
   dispatch(setPlaceLoading());
-  axios
+  axiosInstance
     .get("/places/" + id + "/relatedTours")
     .then(function (res) {
       dispatch({

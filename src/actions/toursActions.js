@@ -1,8 +1,8 @@
-import axios from "axios";
+import axiosInstance from "../App/AxiosInstance";
 import { TOURS_LOADING, GET_TOP_TOURS, TOUR_LOADING, GET_TOUR } from "./types";
 export const getTopTours = () => (dispatch) => {
   dispatch(setTopToursLoading());
-  axios
+  axiosInstance
     .get("/tours")
     .then(function (res) {
      
@@ -28,7 +28,7 @@ export const setTopToursLoading = () => {
 //Single tour
 export const getTour = (id) => (dispatch) => {
   dispatch(setTourLoading());
-  axios
+  axiosInstance
     .get("/tours/" + id)
     .then(function (res) {
       dispatch({
